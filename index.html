@@ -9,6 +9,51 @@
   </head>
   <body>
    add the following line
-  <py-script src="exe.py"></py-script>
+  <py-script>import subprocess
+
+def run_exe_file(file_path: str):
+    """
+    Runs an executable (exe) file offline.
+
+    Parameters:
+    - file_path: str
+        The path to the executable file that needs to be run.
+
+    Returns:
+    - str:
+        The output of the executed file.
+
+    Raises:
+    - FileNotFoundError:
+        If the specified file path does not exist.
+    - subprocess.CalledProcessError:
+        If there is an error while running the executable file.
+    """
+
+    try:
+        # Running the executable file using the subprocess module
+        output = subprocess.check_output(file_path, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+
+        # Returning the output of the executed file
+        return output
+
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File not found at path: {file_path}")
+
+    except subprocess.CalledProcessError as e:
+        raise subprocess.CalledProcessError(f"Error while running the executable file: {e.output}")
+
+
+# Example usage of the run_exe_file function:
+
+# Example 1: Running an executable file named "my_program.exe"
+exe_file_path = "path/to/my_program.exe"
+try:
+    output = run_exe_file(exe_file_path)
+    print(f"Output of the executed file: {output}")
+except FileNotFoundError as e:
+    print(f"Error: {e}")
+except subprocess.CalledProcessError as e:
+    print(f"Error: {e}")</py-script>
   </body>
 </html>
